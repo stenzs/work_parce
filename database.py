@@ -27,10 +27,12 @@ class Posts(BaseModel):
 
 class Jobs(BaseModel):
     id = PrimaryKeyField(column_name='id', primary_key=True, unique=True)
+    posts_parsed = IntegerField(column_name='posts_parsed', null=True)
     posts_uploaded = IntegerField(column_name='posts_uploaded', null=True)
     posts_update = IntegerField(column_name='posts_update', null=True)
     posts_delete = IntegerField(column_name='posts_delete', null=True)
     errors = IntegerField(column_name='errors', null=True)
+    lead_time = FloatField(column_name='lead_time', null=True)
     date = DateTimeField(column_name='date', null=True)
 
     class Meta:
