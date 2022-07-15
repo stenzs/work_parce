@@ -48,3 +48,12 @@ class Errors(BaseModel):
 
     class Meta:
         table_name = 'errors'
+
+
+class Favorites(BaseModel):
+    id = PrimaryKeyField(column_name="id", primary_key=True, unique=True)
+    user_id = IntegerField(column_name="user_id")
+    obj_id = IntegerField(column_name="obj_id")
+
+    class Meta:
+        table_name = 'favorites'

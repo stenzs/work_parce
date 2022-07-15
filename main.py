@@ -7,7 +7,7 @@ from parse_fl import fl
 from parse_freelance import freelance
 from parse_pchel import pchel
 from parse_youdo import youdo
-from database import Posts, Jobs, Errors
+from database import Posts, Jobs, Errors, Favorites
 from operator import itemgetter
 import time
 
@@ -53,7 +53,10 @@ def base_update():
 
     Posts.insert_many(posts_for_upload).execute()
 
-    Posts.delete().where(Posts.link.not_in(not_for_delete_links)).execute()
+    deletes_posts = list(Posts.select().where((Posts.link.not_in(not_for_delete_links)) & (Posts.source != "https://workdirect.ru/")).dicts())
+    ids_of_deletes_posts = list(map(itemgetter("id"), deletes_posts))
+    Favorites.delete().where(Favorites.obj_id << ids_of_deletes_posts).execute()
+    Posts.delete().where(Posts.id << ids_of_deletes_posts).execute()
 
     lead_time = ("%s" % (time.time() - start_time))
 
